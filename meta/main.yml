@@ -6,5 +6,5 @@ galaxy_info:
   min_ansible_version: 2.10
   platforms:
     - name: Ubuntu
-      versions: ['22.04', '24.04']
+      versions: ['jammy', 'noble']
 dependencies: []
