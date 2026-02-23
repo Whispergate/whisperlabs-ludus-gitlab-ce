@@ -1,5 +1,5 @@
 galaxy_info:
-  author: RedTeamOps
+  author: Whispergate
   description: Highly resilient, flat-variable architecture GitLab CE deployment role
   company: Internal
   license: MIT
