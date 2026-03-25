@@ -10,3 +10,11 @@
 
 - name: Flush handlers to ensure instance is fully operational before post-config
   ansible.builtin.meta: flush_handlers
+
+- name: Set GitLab root password
+  ansible.builtin.shell: |
+    gitlab-rake "gitlab:password:reset[root]" << 'EOF'
+    {{ gitlab_root_password }}
+    {{ gitlab_root_password }}
+    EOF
+  changed_when: false

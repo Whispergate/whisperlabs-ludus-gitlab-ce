@@ -28,3 +28,5 @@
   ansible.builtin.apt:
     name: "{{ gitlab_edition }}"
     state: latest
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_root_password }}"

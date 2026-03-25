@@ -1,24 +1,30 @@
-- name: Get GitLab root token
-  ansible.builtin.uri:
-    url: "{{ gitlab_url }}/oauth/token"
-    method: POST
-    body_format: json
-    body:
-      grant_type: password
-      username: root
-      password: "{{ gitlab_root_password }}"
-  register: gitlab_token
+---
+- name: Template PAT generation script
+  ansible.builtin.template:
+    src: create_pat.rb.j2
+    dest: /tmp/create_pat.rb
+    mode: '0644'
+
+- name: Generate root PAT via Rails runner
+  ansible.builtin.shell: gitlab-rails runner /tmp/create_pat.rb
+  register: gitlab_pat
+  changed_when: false
+
+- name: Remove PAT script
+  ansible.builtin.file:
+    path: /tmp/create_pat.rb
+    state: absent
 
 - name: Create GitLab projects
   ansible.builtin.uri:
-    url: "{{ gitlab_url }}/api/v4/projects"
+    url: "http://localhost/api/v4/projects"
     method: POST
     headers:
-      Authorization: "Bearer {{ gitlab_token.json.access_token }}"
+      PRIVATE-TOKEN: "{{ gitlab_pat.stdout_lines[-1] }}"
     body_format: json
     body:
       name: "{{ item.name }}"
-      visibility: "{{ item.visibility | default('private') }}"
-      namespace_id: "{{ item.namespace_id | default(omit) }}"
+      visibility: "{{ item.visibility }}"
     status_code: [200, 201]
   loop: "{{ gitlab_projects }}"
+  when: gitlab_projects | length > 0

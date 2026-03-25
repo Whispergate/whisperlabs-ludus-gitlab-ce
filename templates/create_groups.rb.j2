@@ -7,12 +7,19 @@ groups = [
 {% endfor %}
 ]
 
+organization = Organizations::Organization.find_by(id: 1) || Organizations::Organization.first
+
 groups.each do |g|
   path = g.downcase.gsub(/[^a-z0-9]/, '-').squeeze('-').chomp('-')
   if Group.find_by(name: g)
     logger.info "Group #{g} exists"
   else
-    Group.create!(name: g, path: path, visibility_level: 20)
+    Group.create!(
+      name: g,
+      path: path,
+      visibility_level: 20,
+      organization: organization
+    )
     logger.info "Group #{g} created"
   end
 end

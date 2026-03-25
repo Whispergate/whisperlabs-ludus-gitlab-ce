@@ -1,0 +1,8 @@
+user = User.where(admin: true).first || User.first
+raise "No user found" unless user
+
+token = user.personal_access_tokens.find_or_initialize_by(name: 'ansible-provisioning')
+token.scopes = ['api']
+token.expires_at = 365.days.from_now
+token.save!
+puts token.token
