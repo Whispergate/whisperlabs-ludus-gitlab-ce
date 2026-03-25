@@ -3,3 +3,4 @@
 - include_tasks: configure.yml
 - include_tasks: groups.yml
 - include_tasks: projects.yml
+- include_tasks: repos.yml
