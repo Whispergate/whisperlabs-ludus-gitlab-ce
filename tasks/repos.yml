@@ -10,6 +10,7 @@
     git config --global user.email "ansible@local"
     git config --global user.name "Ansible"
     git init
+    git branch -M main
     git add .
     git commit -m "Initial commit"
     git remote add origin http://root:{{ gitlab_root_password }}@{{ gitlab_url | regex_replace('http://', '') }}/root/{{ item.name }}.git
