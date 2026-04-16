@@ -42,7 +42,7 @@ gitlab_projects:
   roles:
     - ludus_gitlab_ce
   role_vars:
-    gitlab_url: http://gitlab.test
+    gitlab_url: https://gitlab.test
     gitlab_root_password: password!
     gitlab_groups:
       - dev

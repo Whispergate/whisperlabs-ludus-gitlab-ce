@@ -1,4 +1,19 @@
 ---
+- name: Create GitLab SSL directory
+  ansible.builtin.file:
+    path: /etc/gitlab/ssl
+    state: directory
+    mode: '0755'
+
+- name: Generate self-signed SSL certificate for GitLab
+  ansible.builtin.shell: >
+    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 
+    -keyout /etc/gitlab/ssl/{{ gitlab_url | regex_replace('^https://', '') }}.key 
+    -out /etc/gitlab/ssl/{{ gitlab_url | regex_replace('^https://', '') }}.crt 
+    -subj "/CN={{ gitlab_url | regex_replace('^https://', '') }}"
+  args:
+    creates: "/etc/gitlab/ssl/{{ gitlab_url | regex_replace('^https://', '') }}.crt"
+
 - name: Inject Gitlab primary configuration template
   ansible.builtin.template:
     src: gitlab.rb.j2

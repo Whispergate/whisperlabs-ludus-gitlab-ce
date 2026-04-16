@@ -1,5 +1,5 @@
 gitlab_edition: gitlab-ce
-gitlab_url: http://gitlab.local
+gitlab_url: https://gitlab.local
 gitlab_email_from: gitlab@local
 gitlab_smtp_enable: false
 gitlab_groups: []
